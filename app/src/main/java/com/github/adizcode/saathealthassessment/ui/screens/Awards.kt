@@ -29,44 +29,48 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.github.adizcode.saathealthassessment.R
-import com.github.adizcode.saathealthassessment.data.model.fakeUser
+import com.github.adizcode.saathealthassessment.data.model.User
 import com.github.adizcode.saathealthassessment.ui.theme.AwardsBackground
+import com.github.adizcode.saathealthassessment.ui.viewmodel.AppViewModel
 import java.text.NumberFormat
 
 val RANGE_OF_LEVELS = 1..10
 val RANGE_OF_BADGES = 1..10
 
 @Composable
-fun AwardsScreen(navController: NavController) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(AwardsBackground)
-            .padding(20.dp)
-    ) {
-        TotalPoints(fakeUser.points)
-        Spacer(Modifier.height(20.dp))
-        AwardSection(
-            modifier = Modifier.weight(1f),
-            sectionName = "Levels",
-            prefix = "Level",
-            currentValue = fakeUser.currentLevel,
-            range = RANGE_OF_LEVELS,
-            sectionDrawable = R.drawable.level
-        )
-        AwardSection(
-            modifier = Modifier.weight(1f),
-            sectionName = "Badges",
-            prefix = "Badge",
-            currentValue = fakeUser.currentBadge,
-            range = RANGE_OF_BADGES,
-            sectionDrawable = R.drawable.badge
-        )
+fun AwardsScreen(navController: NavController, viewModel: AppViewModel) {
+    val user = viewModel.user
+    if (user != null) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(AwardsBackground)
+                .padding(20.dp)
+        ) {
+            TotalPoints(user.points)
+            Spacer(Modifier.height(20.dp))
+            AwardSection(
+                modifier = Modifier.weight(1f),
+                sectionName = "Levels",
+                prefix = "Level",
+                currentValue = user.currentLevel,
+                range = RANGE_OF_LEVELS,
+                sectionDrawable = R.drawable.level
+            )
+            AwardSection(
+                modifier = Modifier.weight(1f),
+                sectionName = "Badges",
+                prefix = "Badge",
+                currentValue = user.currentBadge,
+                range = RANGE_OF_BADGES,
+                sectionDrawable = R.drawable.badge
+            )
+        }
     }
 }
 
 @Composable
-fun TotalPoints(points: Int) {
+fun TotalPoints(points: Long) {
     val formattedPoints = NumberFormat.getInstance().format(points)
 
     Column {
@@ -80,7 +84,7 @@ fun AwardSection(
     modifier: Modifier = Modifier,
     sectionName: String,
     prefix: String,
-    currentValue: Int,
+    currentValue: Long,
     range: IntRange,
     @DrawableRes sectionDrawable: Int
 ) {
@@ -103,7 +107,7 @@ fun AwardSection(
 fun SectionColumn(
     modifier: Modifier = Modifier,
     prefix: String,
-    currentValue: Int,
+    currentValue: Long,
     range: IntRange,
     @DrawableRes sectionDrawable: Int
 ) {

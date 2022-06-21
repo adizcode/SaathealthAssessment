@@ -20,6 +20,7 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.github.adizcode.saathealthassessment.navigation.Screen
+import com.github.adizcode.saathealthassessment.ui.viewmodel.AppViewModel
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
@@ -27,7 +28,7 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-fun OnboardingScreen(navController: NavController) {
+fun OnboardingScreen(navController: NavController, viewModel: AppViewModel) {
     val (firstName, setFirstName) = rememberSaveable { mutableStateOf("") }
     val (lastName, setLastName) = rememberSaveable { mutableStateOf("") }
     val (mobileNum, setMobileNum) = rememberSaveable { mutableStateOf("") }
@@ -37,17 +38,20 @@ fun OnboardingScreen(navController: NavController) {
 
     val focusManager = LocalFocusManager.current
 
+    val userInfo = listOf(
+        Triple(firstName, setFirstName, "First Name"),
+        Triple(lastName, setLastName, "Last Name"),
+        Triple(mobileNum, setMobileNum, "Mobile Number")
+    )
+
     Column(
         Modifier
             .fillMaxSize()
             .clickable { focusManager.clearFocus() }) {
         Spacer(Modifier.weight(0.4f))
         HorizontalPager(modifier = Modifier.weight(0.2f), count = 3, state = pageState) {
-            val (value, setValue, label) = when (it) {
-                0 -> Triple(firstName, setFirstName, "First Name")
-                1 -> Triple(lastName, setLastName, "Last Name")
-                else -> Triple(mobileNum, setMobileNum, "Mobile Number")
-            }
+            val (value, setValue, label) = userInfo[it]
+
             OutlinedTextField(
                 value = value,
                 onValueChange = setValue,
@@ -74,6 +78,14 @@ fun OnboardingScreen(navController: NavController) {
             }
             Spacer(Modifier.weight(1f))
             Button(onClick = {
+                when (pageState.currentPage) {
+
+                    // Add validation
+                    0 -> viewModel.updateFirstName(firstName)
+                    1 -> viewModel.updateLastName(lastName)
+                    2 -> viewModel.updateMobile(mobileNum)
+                }
+
                 if (pageState.currentPage < 2) {
                     scope.launch {
                         pageState.animateScrollToPage(pageState.currentPage + 1)

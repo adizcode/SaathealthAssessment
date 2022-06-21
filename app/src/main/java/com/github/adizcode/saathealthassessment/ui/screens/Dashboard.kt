@@ -125,9 +125,8 @@ fun VideoSection(
             style = MaterialTheme.typography.h5.copy(fontWeight = FontWeight.Bold, fontSize = 22.sp)
         )
 
-//        Text("See All", color = Color.Red, modifier = Modifier.padding(end = 10.dp))
         OutlinedButton(
-            onClick = { /*TODO*/ },
+            onClick = {},
             colors = ButtonDefaults.buttonColors(
                 backgroundColor = Color.Transparent,
                 contentColor = Color.Red
