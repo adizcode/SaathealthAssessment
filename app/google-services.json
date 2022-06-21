@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "355127955711",
+    "project_id": "saathealthassessment",
+    "storage_bucket": "saathealthassessment.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:355127955711:android:0ecb04d5397d247e4efcca",
+        "android_client_info": {
+          "package_name": "com.github.adizcode.saathealthassessment"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "355127955711-thd0oa12tmcl8tom0o61ufma5ai3d9ec.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDfTWXGDePQTc9yjTr56a44oN8BjQeQfBQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "355127955711-thd0oa12tmcl8tom0o61ufma5ai3d9ec.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

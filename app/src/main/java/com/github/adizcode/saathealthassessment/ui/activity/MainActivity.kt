@@ -1,4 +1,4 @@
-package com.github.adizcode.saathealthassessment
+package com.github.adizcode.saathealthassessment.ui.activity
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -33,16 +33,16 @@ class MainActivity : ComponentActivity() {
     fun AppRootComposable() {
         SaathealthAssessmentTheme {
 
-            /* TODO: Abstract away navigation details */
+            /* Abstract away navigation details */
 
             val navController = rememberNavController()
 
             NavHost(navController = navController, startDestination = Screen.Auth.route) {
                 composable(Screen.Auth.route) { AuthScreen(navController, viewModel) }
-                composable(Screen.Onboarding.route) { OnboardingScreen(navController) }
-                composable(Screen.Dashboard.route) { DashboardScreen(navController) }
-                composable(Screen.Awards.route) { AwardsScreen(navController) }
-                composable(Screen.Video.route) { VideoScreen(navController) }
+                composable(Screen.Onboarding.route) { OnboardingScreen(navController, viewModel) }
+                composable(Screen.Dashboard.route) { DashboardScreen(navController, viewModel) }
+                composable(Screen.Awards.route) { AwardsScreen(navController, viewModel) }
+                composable(Screen.Video.route) { VideoScreen(navController, viewModel) }
             }
         }
     }

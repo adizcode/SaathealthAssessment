@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id 'com.google.gms.google-services'
 }
 
 android {
@@ -71,4 +72,16 @@ dependencies {
 
     // Splash Screen API for devices with Android < 12
     implementation 'androidx.core:core-splashscreen:1.0.0-rc01'
+
+    // Firebase Libraries
+    // Import the BoM for the Firebase platform
+    implementation platform('com.google.firebase:firebase-bom:30.1.0')
+
+    // Declare the dependency for the Firebase Auth and Firestore
+    // When using the BoM, you don't specify versions in Firebase library dependencies
+    implementation 'com.google.firebase:firebase-auth-ktx'
+    implementation 'com.google.firebase:firebase-firestore-ktx'
+
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.6.2"
+
 }

@@ -25,9 +25,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.navigation.NavController
 import com.github.adizcode.saathealthassessment.data.model.VideoData
-import com.github.adizcode.saathealthassessment.data.model.fakeUser
 import com.github.adizcode.saathealthassessment.data.model.list2
 import com.github.adizcode.saathealthassessment.navigation.Screen
+import com.github.adizcode.saathealthassessment.ui.viewmodel.AppViewModel
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.Player
@@ -37,7 +37,7 @@ import com.google.android.exoplayer2.ui.StyledPlayerView
 import com.google.android.exoplayer2.upstream.DefaultDataSource
 
 @Composable
-fun VideoScreen(navController: NavController) {
+fun VideoScreen(navController: NavController, viewModel: AppViewModel) {
     val landscapeOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
     val context = LocalContext.current
     DisposableEffect(Unit) {
@@ -47,11 +47,15 @@ fun VideoScreen(navController: NavController) {
         onDispose { activity.requestedOrientation = originalOrientation }
     }
 
-    // TODO: Replace this with the clicked video's streamUrl
+    // Replace this with the clicked video's streamUrl
     val url =
         "https://dash.akamaized.net/dash264/TestCasesIOP33/adapatationSetSwitching/5/manifest.mpd"
+
     Row(Modifier.fillMaxWidth()) {
-        VideoPlayer(modifier = Modifier.weight(0.8f), videoUrl = url) { fakeUser.incrementPoints() }
+        VideoPlayer(
+            modifier = Modifier.weight(0.8f),
+            videoUrl = url
+        ) { viewModel.incrementUserPoints() }
         Recommendations(
             modifier = Modifier.weight(0.2f),
             videoList = list2,
@@ -111,7 +115,7 @@ fun Recommendations(
     navController: NavController
 ) {
 
-    // TODO: Modify the click listener to simply change the current media item, instead of creating a new VideoScreen
+    // Modify the click listener to simply change the current media item, instead of creating a new VideoScreen
     LazyColumn(
         modifier = modifier.background(Color.Black),
         verticalArrangement = Arrangement.spacedBy(10.dp)

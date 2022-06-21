@@ -5,10 +5,13 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.material.Button
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
+import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -18,6 +21,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.github.adizcode.saathealthassessment.navigation.Screen
 import com.github.adizcode.saathealthassessment.ui.viewmodel.AppViewModel
@@ -26,6 +30,9 @@ import com.github.adizcode.saathealthassessment.ui.viewmodel.AppViewModel
 fun AuthScreen(navController: NavController, viewModel: AppViewModel) {
     val (email, setEmail) = rememberSaveable { mutableStateOf("") }
     val (password, setPassword) = rememberSaveable { mutableStateOf("") }
+
+    val (isEmailError, setEmailError) = rememberSaveable { mutableStateOf(false) }
+    val (isPassError, setPassError) = rememberSaveable { mutableStateOf(false) }
 
     val showRegistrationForm = rememberSaveable { mutableStateOf(false) }
 
@@ -36,7 +43,7 @@ fun AuthScreen(navController: NavController, viewModel: AppViewModel) {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
-            .background(Color.LightGray)
+            .background(Color.DarkGray)
             .fillMaxSize()
             .clickable { focusManager.clearFocus() }
     ) {
@@ -46,30 +53,41 @@ fun AuthScreen(navController: NavController, viewModel: AppViewModel) {
             buttonText = if (showRegistrationForm.value) "Register" else "Login",
             toggleButtonText = if (showRegistrationForm.value) "I already have an account" else "I need to register",
             onButtonClick = {
-                if (email.isNotBlank() && password.isNotBlank()) {
+                // Validate email
+                val emailRegex = "^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$".toRegex()
+                setEmailError(!emailRegex.matches(email))
+
+                if (!isEmailError && email.isNotBlank() && password.isNotBlank()) {
                     if (showRegistrationForm.value) {
-                        viewModel.register(email, password)
-                        showRegistrationForm.value = false
-                        Toast.makeText(
-                            context,
-                            "Successfully registered. Please login to use the app.",
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        viewModel.register(email, password) {
+                            showRegistrationForm.value = false
+                            Toast.makeText(
+                                context,
+                                "Successfully registered. Please login to use the app.",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
                     } else {
-                        viewModel.login(email, password, navController)
+                        viewModel.login(
+                            email,
+                            password,
+                            goToOnboarding = { navController.navigate(Screen.Onboarding.route) },
+                            goToDashboard = { navController.navigate(Screen.Dashboard.route) })
                     }
                     focusManager.clearFocus()
                 } else {
                     Toast.makeText(
                         context,
-                        "Please enter email and password",
+                        "Please enter correct email and password",
                         Toast.LENGTH_SHORT
                     ).show()
                 }
             },
             onToggleClick = { showRegistrationForm.value = !showRegistrationForm.value },
             onEmailChange = { setEmail(it) },
-            onPasswordChange = { setPassword(it) }
+            onPasswordChange = { setPassword(it) },
+            isEmailError = isEmailError,
+            isPasswordError = isPassError,
         )
     }
 }
@@ -84,22 +102,39 @@ fun AuthFields(
     onToggleClick: () -> Unit,
     onEmailChange: (String) -> Unit,
     onPasswordChange: (String) -> Unit,
+    isEmailError: Boolean,
+    isPasswordError: Boolean
 ) {
     Column {
         OutlinedTextField(
             value = email,
             placeholder = { Text(text = "user@email.com") },
-            label = { Text(text = "email") },
             onValueChange = onEmailChange,
+            isError = isEmailError,
+            colors = TextFieldDefaults.outlinedTextFieldColors(
+                textColor = Color.White,
+                unfocusedBorderColor = Color.LightGray,
+                placeholderColor = Color.White,
+                focusedBorderColor = Color.White
+            )
         )
-
+        Spacer(modifier = Modifier.height(10.dp))
         OutlinedTextField(
             value = password,
             placeholder = { Text(text = "password") },
-            label = { Text(text = "password") },
             onValueChange = onPasswordChange,
-            visualTransformation = PasswordVisualTransformation()
+            visualTransformation = PasswordVisualTransformation(),
+            isError = isPasswordError,
+            colors = TextFieldDefaults.outlinedTextFieldColors(
+                textColor = Color.White,
+                unfocusedBorderColor = Color.LightGray,
+                placeholderColor = Color.White,
+                focusedBorderColor = Color.White,
+
+                )
         )
+
+        Spacer(modifier = Modifier.height(10.dp))
 
         Button(onClick = onButtonClick) {
             Text(buttonText)
