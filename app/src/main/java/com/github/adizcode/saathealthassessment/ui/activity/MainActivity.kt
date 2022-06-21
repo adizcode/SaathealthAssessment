@@ -40,7 +40,7 @@ class MainActivity : ComponentActivity() {
             NavHost(navController = navController, startDestination = Screen.Auth.route) {
                 composable(Screen.Auth.route) { AuthScreen(navController, viewModel) }
                 composable(Screen.Onboarding.route) { OnboardingScreen(navController, viewModel) }
-                composable(Screen.Dashboard.route) { DashboardScreen(navController) }
+                composable(Screen.Dashboard.route) { DashboardScreen(navController, viewModel) }
                 composable(Screen.Awards.route) { AwardsScreen(navController, viewModel) }
                 composable(Screen.Video.route) { VideoScreen(navController, viewModel) }
             }

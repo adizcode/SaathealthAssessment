@@ -28,6 +28,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountBox
+import androidx.compose.material.icons.filled.ExitToApp
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
@@ -47,14 +48,26 @@ import com.github.adizcode.saathealthassessment.data.model.list1
 import com.github.adizcode.saathealthassessment.data.model.list2
 import com.github.adizcode.saathealthassessment.data.model.list3
 import com.github.adizcode.saathealthassessment.navigation.Screen
+import com.github.adizcode.saathealthassessment.ui.viewmodel.AppViewModel
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun DashboardScreen(navController: NavController) {
+fun DashboardScreen(navController: NavController, viewModel: AppViewModel) {
     Scaffold(topBar = {
         TopAppBar(title = { Text("Dashboard") }, actions = {
             IconButton(onClick = { navController.navigate(Screen.Awards.route) }) {
                 Icon(Icons.Filled.AccountBox, null)
+            }
+            IconButton(onClick = {
+                viewModel.logout {
+                    navController.navigate(Screen.Auth.route) {
+                        popUpTo(
+                            Screen.Dashboard.route
+                        ) { inclusive = true }
+                    }
+                }
+            }) {
+                Icon(Icons.Filled.ExitToApp, null)
             }
         })
     }) {

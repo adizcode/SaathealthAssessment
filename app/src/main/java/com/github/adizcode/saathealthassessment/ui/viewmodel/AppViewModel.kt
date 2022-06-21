@@ -61,13 +61,18 @@ class AppViewModel : ViewModel() {
             val signedInUser = FirebaseService.signIn(email, password)
 
             if (signedInUser != null) {
-                if (user?.hasCredentialsSet() == true) {
+                if (FirebaseService.mapDocToUser(signedInUser.uid)?.hasCredentialsSet() == true) {
                     goToDashboard()
                 } else {
                     goToOnboarding()
                 }
             }
         }
+    }
+
+    fun logout(goToAuth: () -> Unit) {
+        FirebaseService.signOut()
+        goToAuth()
     }
 
     fun updateFirstName(firstName: String) {

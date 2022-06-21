@@ -5,10 +5,13 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.material.Button
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
+import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -18,6 +21,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.github.adizcode.saathealthassessment.navigation.Screen
 import com.github.adizcode.saathealthassessment.ui.viewmodel.AppViewModel
@@ -39,7 +43,7 @@ fun AuthScreen(navController: NavController, viewModel: AppViewModel) {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
-            .background(Color.LightGray)
+            .background(Color.DarkGray)
             .fillMaxSize()
             .clickable { focusManager.clearFocus() }
     ) {
@@ -105,19 +109,32 @@ fun AuthFields(
         OutlinedTextField(
             value = email,
             placeholder = { Text(text = "user@email.com") },
-            label = { Text(text = "email") },
             onValueChange = onEmailChange,
-            isError = isEmailError
+            isError = isEmailError,
+            colors = TextFieldDefaults.outlinedTextFieldColors(
+                textColor = Color.White,
+                unfocusedBorderColor = Color.LightGray,
+                placeholderColor = Color.White,
+                focusedBorderColor = Color.White
+            )
         )
-
+        Spacer(modifier = Modifier.height(10.dp))
         OutlinedTextField(
             value = password,
             placeholder = { Text(text = "password") },
-            label = { Text(text = "password") },
             onValueChange = onPasswordChange,
             visualTransformation = PasswordVisualTransformation(),
-            isError = isPasswordError
+            isError = isPasswordError,
+            colors = TextFieldDefaults.outlinedTextFieldColors(
+                textColor = Color.White,
+                unfocusedBorderColor = Color.LightGray,
+                placeholderColor = Color.White,
+                focusedBorderColor = Color.White,
+
+                )
         )
+
+        Spacer(modifier = Modifier.height(10.dp))
 
         Button(onClick = onButtonClick) {
             Text(buttonText)
