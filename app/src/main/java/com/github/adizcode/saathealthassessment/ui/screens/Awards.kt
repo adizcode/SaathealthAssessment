@@ -29,7 +29,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.github.adizcode.saathealthassessment.R
-import com.github.adizcode.saathealthassessment.data.model.User
 import com.github.adizcode.saathealthassessment.data.model.fakeUser
 import com.github.adizcode.saathealthassessment.ui.theme.AwardsBackground
 import java.text.NumberFormat

@@ -1,4 +1,4 @@
-package com.github.adizcode.saathealthassessment
+package com.github.adizcode.saathealthassessment.ui.activity
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
